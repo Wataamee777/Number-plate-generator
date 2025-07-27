@@ -4,7 +4,7 @@ const validRoman = ["Y", "A", "B", "C", "E", "H", "K", "M", "T"];
 function generate() {
   const area = document.getElementById("area").value;
   const mode = document.getElementById("mode").value;
-  const plateType = document.getElementById("plateType").value;
+  const plateType = document.getElementById("plateType")?.value || "white";
   const classNo = document.getElementById("classNo").value.trim();
   let kana = document.getElementById("kana").value.trim();
   const serial = document.getElementById("serial").value.trim();
@@ -42,10 +42,10 @@ function generate() {
       alert(`「${kana}」は通常モードでは使用できません。`);
       return;
     }
-  } else if (mode === "military") {
+  } else {
     kana = kana.toUpperCase();
     if (!validRoman.includes(kana)) {
-      alert(`米軍モードでは次の文字のみ使用可能です: ${validRoman.join(", ")}`);
+      alert(`米軍モードでは使用できる文字は: ${validRoman.join(", ")}`);
       return;
     }
   }
@@ -53,30 +53,37 @@ function generate() {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
+  // キャンバス拡張おすすめ
+  canvas.width = 500;
+  canvas.height = 150;
+
+  // 色反映
   const bgColor = bgColors[plateType] || "#ffffff";
   const textColor = textColors[plateType] || "#000000";
 
+  // 背景
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // 文字色
   ctx.fillStyle = textColor;
 
-  // 地名（左下）
-  ctx.font = "bold 30px sans-serif";
+  // 地名
+  ctx.font = "bold 28px sans-serif";
   ctx.textBaseline = "bottom";
-  ctx.fillText(area, 25, 125);
+  ctx.fillText(area, 30, 140);
 
-  // 分類番号＋ひらがな（左中央）
+  // 分類番号 + ひらがな（左寄せ）
   ctx.font = "bold 60px NumberFont, sans-serif";
   ctx.textBaseline = "middle";
-  ctx.fillText(`${classNo} ${kana}`, 50, 65); // ←左に寄せた！
+  ctx.fillText(`${classNo} ${kana}`, 50, 70);
 
-  // 一連番号（右寄せ固定）
+  // 一連番号（右寄せ）
   ctx.font = "bold 70px NumberFont, sans-serif";
   ctx.textBaseline = "bottom";
   const serialWidth = ctx.measureText(serial).width;
-  const serialX = canvas.width - serialWidth - 25; // ←右端から25px内側
-  ctx.fillText(serial, serialX, 125); // ←Y位置合わせた
+  const serialX = canvas.width - serialWidth - 40;
+  ctx.fillText(serial, serialX, 140);
 }
 
 function download() {
