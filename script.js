@@ -9,12 +9,11 @@ function generate() {
   let kana = document.getElementById("kana").value.trim();
   const serial = document.getElementById("serial").value.trim();
 
-  // プレート背景色・文字色
   const bgColors = {
-    white: "#ffffff",   // 自家用普通
-    yellow: "#ffff99",  // 軽自動車
-    green: "#228B22",   // 事業用
-    pink: "#ffc0cb",    // バイク
+    white: "#ffffff",
+    yellow: "#ffff99",
+    green: "#228B22",
+    pink: "#ffc0cb",
   };
 
   const textColors = {
@@ -57,29 +56,27 @@ function generate() {
   const bgColor = bgColors[plateType] || "#ffffff";
   const textColor = textColors[plateType] || "#000000";
 
-  // 背景塗りつぶし
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // テキスト色セット
   ctx.fillStyle = textColor;
 
-  // 地名（左下寄せ）
+  // 地名（左下）
   ctx.font = "bold 30px sans-serif";
   ctx.textBaseline = "bottom";
   ctx.fillText(area, 25, 125);
 
-  // 分類番号＋ひらがな（中央寄せ）
-  ctx.font = "bold 70px NumberFont, sans-serif";
+  // 分類番号＋ひらがな（左中央）
+  ctx.font = "bold 60px NumberFont, sans-serif";
   ctx.textBaseline = "middle";
-  ctx.fillText(`${classNo} ${kana}`, 130, 70);
+  ctx.fillText(`${classNo} ${kana}`, 50, 65); // ←左に寄せた！
 
-  // 一連番号（やや右寄せ、中央下寄せ）
+  // 一連番号（右寄せ固定）
   ctx.font = "bold 70px NumberFont, sans-serif";
   ctx.textBaseline = "bottom";
   const serialWidth = ctx.measureText(serial).width;
-  const serialX = 260; // 左端固定で整える
-  ctx.fillText(serial, serialX, 125);
+  const serialX = canvas.width - serialWidth - 25; // ←右端から25px内側
+  ctx.fillText(serial, serialX, 125); // ←Y位置合わせた
 }
 
 function download() {
