@@ -4,12 +4,28 @@ const validRoman = ["Y", "A", "B", "C", "E", "H", "K", "M", "T"];
 function generate() {
   const area = document.getElementById("area").value;
   const mode = document.getElementById("mode").value;
+  const plateType = document.getElementById("plateType").value;
   const classNo = document.getElementById("classNo").value.trim();
   let kana = document.getElementById("kana").value.trim();
   const serial = document.getElementById("serial").value.trim();
 
-  if (!classNo.match(/^\d{3}$/)) {
-    alert("分類番号は3桁の数字を入力してください。");
+  // プレート背景色・文字色
+  const bgColors = {
+    white: "#ffffff",   // 自家用普通
+    yellow: "#ffff99",  // 軽自動車
+    green: "#228B22",   // 事業用
+    pink: "#ffc0cb",    // バイク
+  };
+
+  const textColors = {
+    white: "#000000",
+    yellow: "#000000",
+    green: "#ffffff",
+    pink: "#000000",
+  };
+
+  if (!classNo.match(/^\d{2,3}$/)) {
+    alert("分類番号は2〜3桁の数字を入力してください。");
     return;
   }
 
@@ -38,25 +54,38 @@ function generate() {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
-  // 背景クリア
-  ctx.fillStyle = "#fff";
+  const bgColor = bgColors[plateType] || "#ffffff";
+  const textColor = textColors[plateType] || "#000000";
+
+  // 背景塗りつぶし
+  ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 地名（左寄せ、下寄せ気味）
-  ctx.fillStyle = "black";
+  // テキスト色セット
+  ctx.fillStyle = textColor;
+
+  // 地名（左下寄せ）
   ctx.font = "bold 30px sans-serif";
   ctx.textBaseline = "bottom";
-  ctx.fillText(area, 25, 110);
+  ctx.fillText(area, 25, 125);
 
-  // 分類番号＋かな（やや左、中央寄せ）
+  // 分類番号＋ひらがな（中央寄せ）
   ctx.font = "bold 70px NumberFont, sans-serif";
   ctx.textBaseline = "middle";
-  ctx.fillText(`${classNo} ${kana}`, 110, 70);
+  ctx.fillText(`${classNo} ${kana}`, 130, 70);
 
-  // 一連番号（右寄せ）
+  // 一連番号（やや右寄せ、中央下寄せ）
   ctx.font = "bold 70px NumberFont, sans-serif";
   ctx.textBaseline = "bottom";
   const serialWidth = ctx.measureText(serial).width;
-  const rightMargin = 370; // ここで右寄せ位置調整
-  ctx.fillText(serial, rightMargin - serialWidth, 110);
+  const serialX = 260; // 左端固定で整える
+  ctx.fillText(serial, serialX, 125);
+}
+
+function download() {
+  const canvas = document.getElementById("canvas");
+  const a = document.createElement("a");
+  a.href = canvas.toDataURL("image/png");
+  a.download = "numberplate.png";
+  a.click();
 }
