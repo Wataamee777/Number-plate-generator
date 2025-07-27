@@ -42,26 +42,21 @@ function generate() {
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 地名（左端）
+  // 地名（左寄せ、下寄せ気味）
   ctx.fillStyle = "black";
-  ctx.font = "bold 24px sans-serif";
-  ctx.fillText(area, 20, 40);
+  ctx.font = "bold 30px sans-serif";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(area, 25, 110);
 
-  // 分類番号＋ひらがな or ローマ字（少し右寄せ）
-  ctx.font = "bold 48px NumberFont, sans-serif";
-  ctx.fillText(`${classNo} ${kana}`, 110, 90);
+  // 分類番号＋かな（やや左、中央寄せ）
+  ctx.font = "bold 70px NumberFont, sans-serif";
+  ctx.textBaseline = "middle";
+  ctx.fillText(`${classNo} ${kana}`, 110, 70);
 
-  // 一連番号（キャンバス中央にセンタリング）
-  ctx.font = "bold 72px NumberFont, sans-serif";
+  // 一連番号（右寄せ）
+  ctx.font = "bold 70px NumberFont, sans-serif";
+  ctx.textBaseline = "bottom";
   const serialWidth = ctx.measureText(serial).width;
-  const centerX = (canvas.width - serialWidth) / 2;
-  ctx.fillText(serial, centerX, 160);
-}
-
-function download() {
-  const canvas = document.getElementById("canvas");
-  const a = document.createElement("a");
-  a.href = canvas.toDataURL("image/png");
-  a.download = "numberplate.png";
-  a.click();
+  const rightMargin = 370; // ここで右寄せ位置調整
+  ctx.fillText(serial, rightMargin - serialWidth, 110);
 }
