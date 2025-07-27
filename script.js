@@ -19,7 +19,6 @@ function generate() {
   }
 
   if (mode === "normal") {
-    // ひらがなチェック
     if (!kana.match(/^[ぁ-ん]$/)) {
       alert("ひらがな1文字を入力してください。");
       return;
@@ -31,9 +30,7 @@ function generate() {
   } else if (mode === "military") {
     kana = kana.toUpperCase();
     if (!validRoman.includes(kana)) {
-      alert(
-        `米軍モードでは次の文字のみ使用可能です: ${validRoman.join(", ")}`
-      );
+      alert(`米軍モードでは次の文字のみ使用可能です: ${validRoman.join(", ")}`);
       return;
     }
   }
@@ -41,22 +38,24 @@ function generate() {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
-  // 背景
+  // 背景クリア
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 地名（通常フォント）
+  // 地名（左端）
   ctx.fillStyle = "black";
   ctx.font = "bold 24px sans-serif";
   ctx.fillText(area, 20, 40);
 
-  // 分類番号＋ひらがな or ローマ字（ナンバーフォント）
+  // 分類番号＋ひらがな or ローマ字（少し右寄せ）
   ctx.font = "bold 48px NumberFont, sans-serif";
-  ctx.fillText(`${classNo} ${kana}`, 20, 90);
+  ctx.fillText(`${classNo} ${kana}`, 110, 90);
 
-  // 一連番号（ナンバーフォントで大きめ）
+  // 一連番号（キャンバス中央にセンタリング）
   ctx.font = "bold 72px NumberFont, sans-serif";
-  ctx.fillText(serial, 20, 160);
+  const serialWidth = ctx.measureText(serial).width;
+  const centerX = (canvas.width - serialWidth) / 2;
+  ctx.fillText(serial, centerX, 160);
 }
 
 function download() {
