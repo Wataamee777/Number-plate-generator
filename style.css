@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'NumberFont';
+  src: url('fonts/number_font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 40px auto;
+}
+
+#form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin: 10px;
+  font-size: 18px;
+}
+
+input,
+select {
+  font-size: 16px;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+button {
+  font-size: 16px;
+  margin: 10px 5px;
+  padding: 5px 10px;
+}
+
+canvas {
+  border: 2px solid #000;
+  margin-top: 20px;
+  background-color: #fff;
+}
